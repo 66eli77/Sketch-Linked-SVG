@@ -1,0 +1,77 @@
+@import "script.js"
+
+var LinkedSVG_prefix = '@@';
+
+var IMPORT_linked_svg = function(context) {
+  var doc = context.document;
+  var command = context.command;
+
+  var page = [doc currentPage];
+  var selection = context.selection;
+
+  if ([doc fileURL]) {
+    var docDir = LinkedSVG.getDirectory([doc fileURL]);
+    var group;
+
+    if ([selection count] > 0) {
+      var sel = [selection objectAtIndex:0];
+      if ([sel className] == "MSArtboardGroup") {
+        group = sel;
+      } else {
+        group = [sel parentGroup];
+      }
+    } else {
+      group = page;
+    }
+
+    var selectedSvgURL = LinkedSVG.openPanelMultiple(docDir,"Select a SVG file to import…","Select","Import SVG");
+    if ([selectedSvgURL count] > 0) {
+      for (x = 0; x < [selectedSvgURL count]; x++) {
+        var thisSVG = [selectedSvgURL objectAtIndex:x];
+        var absolutePath = [thisSVG absoluteString]
+        var layerName = LinkedSVG.makeLayerName(absolutePath,[[doc fileURL] absoluteString]);
+        LinkedSVG.makeSvgLayerGroup(group,layerName,thisSVG);
+      }
+    }
+  } else {
+    LinkedSVG.util.displayAlert("Place Linked SVG…","Please save your Sketch document before importing a SVG.");
+  }
+};
+
+var UPDATE_linked_svgs = function(context) {
+  var doc = context.document;
+  var command = context.command;
+
+  var page = [doc currentPage];
+
+  var docDir = LinkedSVG.getDirectory([doc fileURL]);
+
+  var allLayers = [page children];
+  var validLayers = LinkedSVG.findAllMarkedLayers(context,allLayers);
+
+  if (validLayers.length > 0) {
+    for (var x = 0; x < validLayers.length; x++) {
+      var layer = validLayers[x];
+      var taggedFileRelativeURL = layer.name().replace('@@', '');
+      var absoluteFileURL = LinkedSVG.expandRelativePath(taggedFileRelativeURL,docDir);
+      var fileURLUnix = absoluteFileURL.toString().replace('file:///','/');
+      fileURLUnix = LinkedSVG.util.decodeString(fileURLUnix);
+      var fileExists = [[NSFileManager defaultManager] fileExistsAtPath:fileURLUnix];
+
+      if (fileExists) {
+        if ([layer className] == "MSLayerGroup") {
+          // to get local file, need a NSURL URL object.
+          var NSURLfileURL = [NSURL URLWithString:absoluteFileURL];
+          LinkedSVG.updateSvgLayerGroup(layer, NSURLfileURL);
+          log(fileURLUnix + " updated");
+        } else {
+          log(layer.className() + " update is not supported yet.");
+        }
+      } else {
+        log(fileURLUnix + " not found, skipping.");
+      }
+    }
+  } else {
+    LinkedSVG.util.displayAlert("Update SVGs","No SVGs to update.");
+  }
+};

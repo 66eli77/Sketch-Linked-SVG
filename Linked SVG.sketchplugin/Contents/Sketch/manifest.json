@@ -1,0 +1,32 @@
+{
+  "commands": [
+    {
+      "handler": "IMPORT_linked_svg",
+      "identifier": "IMPORT",
+      "name": "Import Linked SVG",
+      "script": "handlers.cocoascript",
+      "shortcut": "control command i"
+    },
+    {
+      "handler": "UPDATE_linked_svgs",
+      "identifier": "UPDATE",
+      "name": "Update All Linked SVGs",
+      "script": "handlers.cocoascript",
+      "shortcut": "control command u"
+    }
+  ],
+  "menu": {
+    "items": [
+      "IMPORT",
+      "UPDATE"
+    ],
+    "title": "Linked SVG"
+  },
+  "identifier": "io.eli.sketch.linked-svg",
+  "author": "Eli Dai",
+  "authorEmail": "66eli77@gmail.com",
+  "compatibleVersion": "39",
+  "description": "Import external SVG files into Sketch; update Sketch layers after external SVGs are updated",
+  "name": "Linked SVG",
+  "version": "1.39.1"
+}
