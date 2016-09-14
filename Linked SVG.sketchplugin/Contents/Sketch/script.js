@@ -103,6 +103,10 @@ var LinkedSVG = {
     svgImporter.prepareToImportFromURL(url);
     var innerLayer = svgImporter.importAsLayer();
     innerLayer.name = 'LinkedSVG';
+    var outerFrame = layer.frame();
+    var innerFrame = innerLayer.frame();
+    innerFrame.setWidth(outerFrame.width());
+    innerFrame.setHeight(outerFrame.height());
     [layer addLayers:[innerLayer]];
   },
 
