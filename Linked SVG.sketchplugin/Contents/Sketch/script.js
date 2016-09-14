@@ -57,16 +57,17 @@ var LinkedSVG = {
   },
 
   "makeSvgLayerGroup": function(container, name, url) {
-    // Set up the SVG Importer
     var svgImporter = MSSVGImporter.svgImporter();
-    // MSDocumentImporter.importFromURL_inGroup_importer(url, container, svgImporter);
-    var layer = MSLayerGroup.new();
-    layer.initWithFrame(NSMakeRect(0, 0, 100, 100));
-    layer.name = name;
-    MSDocumentImporter.importFromURL_inGroup_importer(url, layer, svgImporter);
-    layer.resizeToFitChildrenWithOption(0);
-    [container addLayers:[layer]];
-    layer.select_byExpandingSelection(true, false);
+    svgImporter.prepareToImportFromURL(url);
+    var layer = svgImporter.importAsLayer();
+    layer.name = 'LinkedSVG';
+    var outerLayer = MSLayerGroup.new();
+    var frame = layer.frame();
+    outerLayer.initWithFrame(NSMakeRect(frame.x(), frame.y(), frame.width(), frame.height()));
+    outerLayer.name = name;
+    [outerLayer addLayers:[layer]];
+    [container addLayers:[outerLayer]];
+    outerLayer.select_byExpandingSelection(true, false);
   },
 
   "makeLayerName": function(filePath, docPath) {
@@ -99,7 +100,10 @@ var LinkedSVG = {
   "updateSvgLayerGroup": function(layer, url) {
     layer.removeAllLayers();
     var svgImporter = MSSVGImporter.svgImporter();
-    MSDocumentImporter.importFromURL_inGroup_importer(url, layer, svgImporter);
+    svgImporter.prepareToImportFromURL(url);
+    var innerLayer = svgImporter.importAsLayer();
+    innerLayer.name = 'LinkedSVG';
+    [layer addLayers:[innerLayer]];
   },
 
   "util": {
