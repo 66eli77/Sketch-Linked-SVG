@@ -8,6 +8,13 @@
       "shortcut": "control command i"
     },
     {
+      "handler": "EXPORT_linked_svg",
+      "identifier": "EXPORT",
+      "name": "Export Linked SVG",
+      "script": "handlers.cocoascript",
+      "shortcut": "control command e"
+    },
+    {
       "handler": "UPDATE_linked_svgs",
       "identifier": "UPDATE",
       "name": "Update All Linked SVGs",
@@ -18,6 +25,7 @@
   "menu": {
     "items": [
       "IMPORT",
+      "EXPORT",
       "UPDATE"
     ],
     "title": "Linked SVG"

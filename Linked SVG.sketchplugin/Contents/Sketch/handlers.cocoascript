@@ -4,7 +4,6 @@ var LinkedSVG_prefix = '@@';
 
 var IMPORT_linked_svg = function(context) {
   var doc = context.document;
-  var command = context.command;
 
   var page = [doc currentPage];
   var selection = context.selection;
@@ -14,12 +13,7 @@ var IMPORT_linked_svg = function(context) {
     var group;
 
     if ([selection count] > 0) {
-      var sel = [selection objectAtIndex:0];
-      if ([sel className] == "MSArtboardGroup") {
-        group = sel;
-      } else {
-        group = [sel parentGroup];
-      }
+      group = [selection objectAtIndex:0];
     } else {
       group = page;
     }
@@ -30,17 +24,35 @@ var IMPORT_linked_svg = function(context) {
         var thisSVG = [selectedSvgURL objectAtIndex:x];
         var absolutePath = [thisSVG absoluteString]
         var layerName = LinkedSVG.makeLayerName(absolutePath,[[doc fileURL] absoluteString]);
-        LinkedSVG.makeSvgLayerGroup(group,layerName,thisSVG);
+        LinkedSVG.importSVG(group,layerName,thisSVG);
       }
     }
   } else {
-    LinkedSVG.util.displayAlert("Place Linked SVG…","Please save your Sketch document before importing a SVG.");
+    LinkedSVG.util.displayAlert("Import Linked SVG…","Please save your Sketch document before importing a SVG.");
   }
+};
+
+var EXPORT_linked_svg = function(context) {
+  var doc = context.document;
+  var docDir;
+  if ([doc fileURL]) {
+    docDir = LinkedSVG.getDirectory([doc fileURL]);
+  }
+
+  var page = [doc currentPage];
+  var selection = context.selection;
+  var group;
+
+  if ([selection count] > 0) {
+    group = [selection objectAtIndex:0];
+  } else {
+    group = page;
+  }
+  LinkedSVG.exportSVG(docDir, group);
 };
 
 var UPDATE_linked_svgs = function(context) {
   var doc = context.document;
-  var command = context.command;
 
   var page = [doc currentPage];
 
@@ -62,7 +74,7 @@ var UPDATE_linked_svgs = function(context) {
         if ([layer className] == "MSLayerGroup") {
           // to get local file, need a NSURL URL object.
           var NSURLfileURL = [NSURL URLWithString:absoluteFileURL];
-          LinkedSVG.updateSvgLayerGroup(layer, NSURLfileURL);
+          LinkedSVG.updateSVG(layer, NSURLfileURL);
           log(fileURLUnix + " updated");
         } else {
           log(layer.className() + " update is not supported yet.");
