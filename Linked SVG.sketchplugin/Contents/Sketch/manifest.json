@@ -15,6 +15,20 @@
       "shortcut": "control command e"
     },
     {
+      "handler": "OPEN_svg",
+      "identifier": "OPEN",
+      "name": "Open SVG",
+      "script": "handlers.cocoascript",
+      "shortcut": "control command o"
+    },
+    {
+      "handler": "SAVE_svg",
+      "identifier": "SAVE",
+      "name": "Save SVG",
+      "script": "handlers.cocoascript",
+      "shortcut": "control command s"
+    },
+    {
       "handler": "UPDATE_linked_svgs",
       "identifier": "UPDATE",
       "name": "Update All Linked SVGs",
@@ -26,6 +40,8 @@
     "items": [
       "IMPORT",
       "EXPORT",
+      "OPEN",
+      "SAVE",
       "UPDATE"
     ],
     "title": "Linked SVG"

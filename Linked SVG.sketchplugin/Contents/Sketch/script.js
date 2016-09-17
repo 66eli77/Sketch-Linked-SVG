@@ -89,6 +89,44 @@ var LinkedSVG = {
     layer.select_byExpandingSelection(true, false);
   },
 
+  "openSVG": function(page, url) {
+    var fileName = url.absoluteString().split('/').pop();
+    var fileNameParts = fileName.split('.');
+    var fileFormat = fileNameParts.pop();
+    if (fileFormat != 'svg'){
+      LinkedSVG.util.displayAlert("Cannot Open ."+fileFormat+" file","Please select a SVG file.");
+      return;
+    }
+    var svgImporter = MSSVGImporter.svgImporter();
+    svgImporter.prepareToImportFromURL(url);
+    var layer = svgImporter.importAsLayer();
+    layer.name = fileNameParts.shift();
+    layer.firstLayer().ungroup();
+    [page addLayers:[layer]];
+    layer.select_byExpandingSelection(true, false);
+  },
+
+  "saveSVG": function(doc, page) {
+    var fromat = MSExportFormat.formatWithScale_name_fileFormat(1.000000, '', 'svg')
+    var option = MSExportOptions.new();
+    option.setExportFormats([fromat]);
+    page.setPrimitiveExportOptions(option);
+    var colorSpace = [NSColorSpace sRGBColorSpace];
+    var request = MSExportRequest.exportRequestsFromExportableLayer(page).firstObject();
+    var exporter = MSExportRendererWithSVGSupport.exporterForRequest_colorSpace(request, colorSpace);
+    var exportedData = exporter.data();
+    var exportPath = [doc fileURL];
+    if(exportPath){
+      exportPath = exportPath.toString().replace('.sketch', '.svg');
+      exportPath = exportPath.toString().replace('file://', '');
+      exportedData.writeToFile_atomically(this.util.decodeString(exportPath), true);
+    } else {
+      exportPath = this.openSaveFileDialog(nil, request.name()+'.svg');
+      exportedData.writeToFile_atomically(this.util.decodeString(exportPath), true);
+    }
+    doc.showMessage('Successfully saved to "'+exportPath.toString()+'"');
+  },
+
   "updateSVG": function(layer, url) {
     layer.removeAllLayers();
     var svgImporter = MSSVGImporter.svgImporter();

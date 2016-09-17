@@ -4,7 +4,6 @@ var LinkedSVG_prefix = '@@';
 
 var IMPORT_linked_svg = function(context) {
   var doc = context.document;
-
   var page = [doc currentPage];
   var selection = context.selection;
 
@@ -35,29 +34,39 @@ var IMPORT_linked_svg = function(context) {
 var EXPORT_linked_svg = function(context) {
   var doc = context.document;
   var docDir;
+
   if ([doc fileURL]) {
     docDir = LinkedSVG.getDirectory([doc fileURL]);
   }
-
   var page = [doc currentPage];
   var selection = context.selection;
-  var group;
 
-  if ([selection count] > 0) {
-    group = [selection objectAtIndex:0];
-  } else {
-    group = page;
+  LinkedSVG.exportSVG(docDir, page, selection);
+};
+
+var OPEN_svg = function(context) {
+  var doc = context.document;
+  var page = [doc currentPage];
+  var docDir;
+
+  if ([doc fileURL]) {
+    docDir = LinkedSVG.getDirectory([doc fileURL]);
   }
-  LinkedSVG.exportSVG(docDir, group);
+  var selectedSvgURL = LinkedSVG.openPanelMultiple(docDir,"Open a SVG file with Sketch…","Select","Open SVG");
+  LinkedSVG.openSVG(page, [selectedSvgURL objectAtIndex:0]);
+};
+
+var SAVE_svg = function(context) {
+  var doc = context.document;
+  var page = [doc currentPage];
+  var selection = context.selection;
+  LinkedSVG.saveSVG(doc, page);
 };
 
 var UPDATE_linked_svgs = function(context) {
   var doc = context.document;
-
   var page = [doc currentPage];
-
   var docDir = LinkedSVG.getDirectory([doc fileURL]);
-
   var allLayers = [page children];
   var validLayers = LinkedSVG.findAllMarkedLayers(context,allLayers);
 
@@ -80,7 +89,7 @@ var UPDATE_linked_svgs = function(context) {
           log(layer.className() + " update is not supported yet.");
         }
       } else {
-        log(fileURLUnix + " not found, skipping.");
+        doc.showMessage(fileURLUnix + " not found, skipping.");
       }
     }
   } else {
