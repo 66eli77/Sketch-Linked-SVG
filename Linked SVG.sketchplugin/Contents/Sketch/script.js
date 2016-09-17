@@ -56,27 +56,34 @@ var LinkedSVG = {
     return "file:///" + docUrlParts.join('/') + '/' + fileUrlParts.join('/');
   },
 
-  "exportSVG": function(docDir, group) {
+  "exportSVG": function(docDir, page, selection) {
     var fromat = MSExportFormat.formatWithScale_name_fileFormat(1.000000, '', 'svg')
     var option = MSExportOptions.new();
     option.setExportFormats([fromat]);
-    var exportFormat = option.exportFormats();
     var colorSpace = [NSColorSpace sRGBColorSpace];
-    var request = MSExportRequest.exportRequestsFromExportableLayer_exportFormats_useIDForName(group, exportFormat, false).firstObject();
-    //don't export imported Linked SVG, the user should directly go to the source Linked SVG.
-    if (request.name().startsWith('@@')) {
-      this.util.displayAlert("Oops","You should not export imported Linked SVG that is marked with '@@' prefix. You can just find it by following the relative path in its name.");
-      return;
+    var request;
+    var exportedData;
+    var exporter;
+
+    if ([selection count] > 0) {
+      var tempPage = page.duplicate();
+      tempPage.removeAllLayers()
+      tempPage.addLayers(selection);
+      tempPage.setPrimitiveExportOptions(option);
+      request = MSExportRequest.exportRequestsFromExportableLayer(tempPage).firstObject();
+      tempPage = nil;
+    } else {
+      page.setPrimitiveExportOptions(option);
+      request = MSExportRequest.exportRequestsFromExportableLayer(page).firstObject();
     }
-    var exporter = MSExportRendererWithSVGSupport.exporterForRequest_colorSpace(request, colorSpace);
-    var exportedData = exporter.data();
-    // turn NSData into NSString so that we can save the SVG to file correctly.
-    var svgString = this.util.parseSVG(exportedData);
+    exporter = MSExportRendererWithSVGSupport.exporterForRequest_colorSpace(request, colorSpace);
+    exportedData = exporter.data();
+
     // openSaveFileDialog asks the user the path to save the export file.
     var exportPath = this.openSaveFileDialog(docDir, request.name()+'.svg');
     // save exported SVG data to the specified path.
     if (exportPath) {
-      svgString.writeToFile_atomically(this.util.decodeString(exportPath), true);
+      exportedData.writeToFile_atomically(this.util.decodeString(exportPath), true);
     }
   },
 
@@ -85,6 +92,7 @@ var LinkedSVG = {
     svgImporter.prepareToImportFromURL(url);
     var layer = svgImporter.importAsLayer();
     layer.name = name;
+    layer.firstLayer().ungroup();
     [container addLayers:[layer]];
     layer.select_byExpandingSelection(true, false);
   },
@@ -138,6 +146,7 @@ var LinkedSVG = {
     importedLayerGroupFrame.setWidth(outerFrame.width());
     importedLayerGroupFrame.setHeight(outerFrame.height());
     [layer addLayers:[importedLayer]];
+    layer.firstLayer().ungroup();
   },
 
   "makeLayerName": function(filePath, docPath) {
@@ -173,7 +182,9 @@ var LinkedSVG = {
     [openPanel setAllowsMultipleSelection:true];
     [openPanel setShowsHiddenFiles:false];
     [openPanel setExtensionHidden:false];
-    [openPanel setDirectoryURL:[NSURL fileURLWithPath:filePath]]];
+    if (filePath) {
+      [openPanel setDirectoryURL:[NSURL fileURLWithPath:filePath]]];
+    }
     [[NSApplication sharedApplication] activateIgnoringOtherApps:true];
     var openPanelButtonPressed = [openPanel runModal];
     if (openPanelButtonPressed == NSFileHandlingPanelOKButton) {
@@ -201,8 +212,8 @@ var LinkedSVG = {
     },
     "parseSVG": function(rawData) {
       var svgString = [[NSString alloc] initWithData:rawData encoding:NSUTF8StringEncoding];
-      svgString = this.collapseStartingGroupTag(svgString);
-      svgString = this.removeClosingGroupTag(svgString);
+      // svgString = this.collapseStartingGroupTag(svgString);
+      // svgString = this.removeClosingGroupTag(svgString);
       return [svgString dataUsingEncoding:NSUTF8StringEncoding];
     },
     "removeClosingGroupTag": function(svgString) {
