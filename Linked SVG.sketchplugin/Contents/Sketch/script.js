@@ -108,9 +108,10 @@ var LinkedSVG = {
     var svgImporter = MSSVGImporter.svgImporter();
     svgImporter.prepareToImportFromURL(url);
     var layer = svgImporter.importAsLayer();
-    layer.name = fileNameParts.shift();
+    page.name = fileNameParts.shift();
     layer.firstLayer().ungroup();
     [page addLayers:[layer]];
+    page.firstLayer().ungroup();
     layer.select_byExpandingSelection(true, false);
   },
 
@@ -156,7 +157,7 @@ var LinkedSVG = {
 
   "openSaveFileDialog": function(path, name){
     var openDlg = NSSavePanel.savePanel();
-    openDlg.setTitle('Export SVG In…');
+    openDlg.setTitle('Save SVG In…');
     openDlg.setCanChooseFiles(false);
     openDlg.setCanChooseDirectories(true);
     openDlg.allowsMultipleSelection = false;
@@ -212,8 +213,8 @@ var LinkedSVG = {
     },
     "parseSVG": function(rawData) {
       var svgString = [[NSString alloc] initWithData:rawData encoding:NSUTF8StringEncoding];
-      // svgString = this.collapseStartingGroupTag(svgString);
-      // svgString = this.removeClosingGroupTag(svgString);
+      svgString = this.collapseStartingGroupTag(svgString);
+      svgString = this.removeClosingGroupTag(svgString);
       return [svgString dataUsingEncoding:NSUTF8StringEncoding];
     },
     "removeClosingGroupTag": function(svgString) {
