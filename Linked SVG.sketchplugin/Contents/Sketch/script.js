@@ -163,8 +163,8 @@ var LinkedSVG = {
     },
     "parseSVG": function(rawData) {
       var svgString = [[NSString alloc] initWithData:rawData encoding:NSUTF8StringEncoding];
-      // svgString = this.collapseStartingGroupTag(svgString);
-      // svgString = this.removeClosingGroupTag(svgString);
+      svgString = this.collapseStartingGroupTag(svgString);
+      svgString = this.removeClosingGroupTag(svgString);
       return [svgString dataUsingEncoding:NSUTF8StringEncoding];
     },
     "removeClosingGroupTag": function(svgString) {
@@ -197,8 +197,39 @@ var LinkedSVG = {
       result = firstStartingGroupTag.substringWithRange(foundRange.rangeAtIndex(0));
       var headlessGroupTag = firstStartingGroupTag.stringByReplacingOccurrencesOfString_withString(result, '');
       //combine the first two stripped down starting groups
-      var newGroupTag = secondStartingGroupTag.stringByReplacingOccurrencesOfString_withString('>', ' ') + headlessGroupTag;
+      var newGroupTag = secondStartingGroupTag.stringByReplacingOccurrencesOfString_withString('>', ' ').stringByAppendingString(headlessGroupTag);
+      newGroupTag = this.avoidAttrRedefine(newGroupTag);
+
       return svgString.stringByReplacingOccurrencesOfString_withString(secondStartingGroupTag, newGroupTag);
+    },
+    "avoidAttrRedefine": function(tagString) {
+      //define the regex to use to remove from the tagString
+      var regexStroke = NSRegularExpression.regularExpressionWithPattern_options_error("\ stroke=\".*?\"", NSRegularExpressionAnchorsMatchLines, nil);
+      var regexstrokeWidth = NSRegularExpression.regularExpressionWithPattern_options_error("\ stroke-width=\".*?\"", NSRegularExpressionAnchorsMatchLines, nil);
+      var regexFill = NSRegularExpression.regularExpressionWithPattern_options_error("\ fill=\".*?\"", NSRegularExpressionAnchorsMatchLines, nil);
+      var regexFillRule = NSRegularExpression.regularExpressionWithPattern_options_error("\ fill-rule=\".*?\"", NSRegularExpressionAnchorsMatchLines, nil);
+      
+      //make sure there is no redefined stroke attribute
+      tagString = this.regexRemove(tagString, regexStroke);
+      //make sure there is no redefined stroke-width attribute
+      tagString = this.regexRemove(tagString, regexstrokeWidth);
+      //make sure there is no redefined fill attribute
+      tagString = this.regexRemove(tagString, regexFill);
+      //make sure there is no redefined fill-rule attribute
+      tagString = this.regexRemove(tagString, regexFillRule);
+
+      return tagString;
+    },
+    "regexRemove": function(string, regex) {
+      var searchRange = NSMakeRange(0, string.length());
+      var matched = regex.matchesInString_options_range(string, 0, searchRange);
+      while (matched.count() > 1) {
+        var foundRange = matched.objectAtIndex(1);
+        string = string.stringByReplacingCharactersInRange_withString(foundRange.rangeAtIndex(0), '');
+        searchRange = NSMakeRange(0, string.length());
+        matched = regex.matchesInString_options_range(string, 0, searchRange);
+      }
+      return string;
     }
   }
 };
