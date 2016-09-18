@@ -1,6 +1,13 @@
 {
   "commands": [
     {
+      "handler": "UPDATE_linked_svgs",
+      "identifier": "UPDATE",
+      "name": "Update Linked SVGs",
+      "script": "handlers.cocoascript",
+      "shortcut": "control command u"
+    },
+    {
       "handler": "IMPORT_linked_svg",
       "identifier": "IMPORT",
       "name": "Import Linked SVG",
@@ -8,9 +15,9 @@
       "shortcut": "control command i"
     },
     {
-      "handler": "EXPORT_linked_svg",
+      "handler": "EXPORT_svg",
       "identifier": "EXPORT",
-      "name": "Export Linked SVG",
+      "name": "Export SVG",
       "script": "handlers.cocoascript",
       "shortcut": "control command e"
     },
@@ -27,22 +34,15 @@
       "name": "Save SVG",
       "script": "handlers.cocoascript",
       "shortcut": "control command s"
-    },
-    {
-      "handler": "UPDATE_linked_svgs",
-      "identifier": "UPDATE",
-      "name": "Update All Linked SVGs",
-      "script": "handlers.cocoascript",
-      "shortcut": "control command u"
     }
   ],
   "menu": {
     "items": [
+      "UPDATE",
       "IMPORT",
       "EXPORT",
       "OPEN",
-      "SAVE",
-      "UPDATE"
+      "SAVE"
     ],
     "title": "Linked SVG"
   },
