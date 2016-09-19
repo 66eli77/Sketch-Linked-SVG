@@ -29403,7 +29403,7 @@ __globals.EXPORT_svg = function (context) {
   var exportPath = showSaveFilePanel(docDir, request.name()+'.svg');
   // save exported SVG data to the specified path.
   if (exportPath) {
-    exportedData.writeToFile_atomically(decodeString(exportPath), true);
+    compressedString.writeToFile_atomically(decodeString(exportPath), true);
   }
 };
 
@@ -29454,7 +29454,7 @@ __globals.SAVE_svg = function (context) {
     exportPath = exportPath.toString().replace('file://', '');
     compressedString.writeToFile_atomically(decodeString(exportPath), true);
   } else {
-    exportPath = this.openSaveFileDialog(nil, request.name()+'.svg');
+    exportPath = showSaveFilePanel(nil, request.name()+'.svg');
     compressedString.writeToFile_atomically(decodeString(exportPath), true);
   }
   doc.showMessage('Successfully saved to "'+exportPath.toString()+'"');
