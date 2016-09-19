@@ -29384,7 +29384,7 @@ __globals.EXPORT_svg = function (context) {
 
   if (selection.count() > 0) {
     var tempPage = page.duplicate();
-    tempPage.removeAllLayers()
+    tempPage.removeAllLayers();
     tempPage.addLayers(selection);
     tempPage.setPrimitiveExportOptions(option);
     request = MSExportRequest.exportRequestsFromExportableLayer(tempPage).firstObject();
@@ -29428,7 +29428,9 @@ __globals.OPEN_svg = function (context) {
   svgImporter.prepareToImportFromURL(url);
   var layer = svgImporter.importAsLayer();
   page.name = fileNameParts.shift();
-  layer.firstLayer().ungroup();
+  if (layer.firstLayer()) {
+    layer.firstLayer().ungroup();
+  }
   page.addLayers([layer]);
   page.firstLayer().ungroup();
   layer.select_byExpandingSelection(true, false);
@@ -29470,7 +29472,7 @@ function compressSVG(svgString) {
     "comment": "This is the settings file for the SVGO Compressor Plugin. For more info, please check <https://github.com/BohemianCoding/svgo-compressor>",
     "pretty": true,
     "indent": 2,
-    "plugins": [{ "name": "cleanupAttrs" }, { "name": "cleanupEnableBackground" }, { "name": "cleanupListOfValues" }, { "name": "cleanupNumericValues" }, { "name": "collapseGroups" }, { "name": "convertStyleToAttrs" }, { "name": "convertTransform" }, { "name": "mergePaths" }, { "name": "minifyStyles" }, { "name": "removeComments" }, { "name": "removeDesc", "params": { "removeAny": true } }, { "name": "removeDoctype" }, { "name": "removeEditorsNSData" }, { "name": "removeEmptyAttrs" }, { "name": "removeEmptyContainers" }, { "name": "removeEmptyText" }, { "name": "removeMetadata" }, { "name": "removeNonInheritableGroupAttrs" }, { "name": "removeTitle" }, { "name": "removeUnknownsAndDefaults" }, { "name": "removeUnusedNS" }, { "name": "removeUselessDefs" }, { "name": "removeUselessStrokeAndFill" }, { "name": "removeXMLProcInst" }, { "name": "sortAttrs" }]
+    "plugins": [{ "name": "cleanupAttrs" }, { "name": "cleanupEnableBackground" }, { "name": "cleanupListOfValues" }, { "name": "cleanupNumericValues" }, { "name": "collapseGroups" }, { "name": "convertStyleToAttrs" }, { "name": "convertPathData" }, { "name": "convertTransform" }, { "name": "mergePaths" }, { "name": "minifyStyles" }, { "name": "removeComments" }, { "name": "removeDesc", "params": { "removeAny": true } }, { "name": "removeDoctype" }, { "name": "removeEditorsNSData" }, { "name": "removeEmptyAttrs" }, { "name": "removeEmptyContainers" }, { "name": "removeEmptyText" }, { "name": "removeMetadata" }, { "name": "removeNonInheritableGroupAttrs" }, { "name": "removeTitle" }, { "name": "removeUnknownsAndDefaults" }, { "name": "removeUnusedNS" }, { "name": "removeUselessDefs" }, { "name": "removeUselessStrokeAndFill" }, { "name": "removeXMLProcInst" }, { "name": "sortAttrs" }]
   };
 
   var parsedSVGOPlugins = [];
