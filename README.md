@@ -1,27 +1,29 @@
 # Sketch-Linked-SVG
-Sketch plugin that lets you import external SVGs and update the imported SVGs
+Sketch already supports drag and drop SVG files. However by importing SVG files via this plugin, you can update the imported SVG layer if the external source file changed.
 
 <img src="wow.png" style="width: 160px;" />
 
 # Installation
 
-Move the Sketch Palettes plugin into your Plugins folder. You can get access to that folder by opening the Plugins menu, and choosing "Reveal Plugins Folder..."
+[Download Sketch-Linked-SVG](https://github.com/66eli77/Sketch-Linked-SVG/archive/master.zip) & unzip it.
+Double click `Linked SVG.sketchplugin` to install the Plugin.
 
 
 # Usage
 
-#### Import Linked SVG
+- `Update Linked SVGs` -- reload all SVG layers marked with `@@`
 
-Sketch already supports drag and drop SVG files. However by importing SVG files via this plugin, you can update the imported SVG layer if the external source file changed.
+- `Import Linked SVG` -- import external SVG file into a SVG layer and mark the layer with `@@` follow by the relative location of the external SVG file.
 
+- `Export SVG` -- save the selected layers into a SVG file.
 
-#### Update All Linked SVGs
+- `Open SVG` -- open external SVG file in a `page`.
 
-Click this plugin item will reload all the imported SVGs.
+- `Save SVG` -- save all layers in the current `page` into a SVG file.
 
 
 # Info & Feedback
 
-If you have any questions, find a bug, or have ideas for ways to improve the plugin, send me a email at 66eli77@gmail.com
+If you have any questions or ideas, send me an email at 66eli77@gmail.com
 
-Also, big thanks to <a href="https://github.com/frankko/Place-Linked-Bitmap" target="_blank">Place-Linked-Bitmap</a> for inspirations and <a href="https://github.com/abynim/Sketch-Headers" target="_blank">Sketch-Headers</a> for how to use undocumented Sketch functionality.
+Big thanks to <a href="https://github.com/frankko/Place-Linked-Bitmap" target="_blank">Place-Linked-Bitmap</a> for inspirations and <a href="https://github.com/BohemianCoding/svgo-compressor" target="_blank">SVGO Compressor</a> for providing the compression methods and <a href="https://github.com/abynim/Sketch-Headers" target="_blank">Sketch-Headers</a> for how to use undocumented Sketch functionality.
