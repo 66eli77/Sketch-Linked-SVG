@@ -29385,7 +29385,7 @@ __globals.EXPORT_svg = function (context) {
   if (selection.count() > 0) {
     var tempPage = page.duplicate();
     tempPage.removeAllLayers()
-    tempPage.addLayers([selection]);
+    tempPage.addLayers(selection);
     tempPage.setPrimitiveExportOptions(option);
     request = MSExportRequest.exportRequestsFromExportableLayer(tempPage).firstObject();
     tempPage = nil;
