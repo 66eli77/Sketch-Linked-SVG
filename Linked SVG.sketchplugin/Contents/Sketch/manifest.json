@@ -1,41 +1,11 @@
 {
-  "commands": [
-    {
-      "handler": "UPDATE_linked_svgs",
-      "identifier": "UPDATE",
-      "name": "Update Linked SVGs",
-      "script": "handlers.cocoascript",
-      "shortcut": "control command u"
-    },
-    {
-      "handler": "IMPORT_linked_svg",
-      "identifier": "IMPORT",
-      "name": "Import Linked SVG",
-      "script": "handlers.cocoascript",
-      "shortcut": "control command i"
-    },
-    {
-      "handler": "EXPORT_svg",
-      "identifier": "EXPORT",
-      "name": "Export SVG",
-      "script": "handlers.cocoascript",
-      "shortcut": "control command e"
-    },
-    {
-      "handler": "OPEN_svg",
-      "identifier": "OPEN",
-      "name": "Open SVG",
-      "script": "handlers.cocoascript",
-      "shortcut": "control command o"
-    },
-    {
-      "handler": "SAVE_svg",
-      "identifier": "SAVE",
-      "name": "Save SVG",
-      "script": "handlers.cocoascript",
-      "shortcut": "control command s"
-    }
-  ],
+  "identifier": "io.eli.sketch.linked-svg",
+  "author": "Eli Dai",
+  "authorEmail": "66eli77@gmail.com",
+  "compatibleVersion": "39",
+  "description": "Import external SVG files into Sketch; update Sketch layers after external SVGs are updated",
+  "name": "Linked SVG",
+  "version": "1.39.1",
   "menu": {
     "items": [
       "UPDATE",
@@ -46,11 +16,42 @@
     ],
     "title": "Linked SVG"
   },
-  "identifier": "io.eli.sketch.linked-svg",
-  "author": "Eli Dai",
-  "authorEmail": "66eli77@gmail.com",
-  "compatibleVersion": "39",
-  "description": "Import external SVG files into Sketch; update Sketch layers after external SVGs are updated",
-  "name": "Linked SVG",
-  "version": "1.39.1"
+  "commands": [
+    {
+      "handler": "UPDATE_linked_svgs",
+      "identifier": "UPDATE",
+      "name": "Update Linked SVGs",
+      "script": "script.js",
+      "shortcut": "control command u"
+    },
+    {
+      "handler": "IMPORT_linked_svg",
+      "identifier": "IMPORT",
+      "name": "Import Linked SVG",
+      "script": "script.js",
+      "shortcut": "control command i"
+    },
+    {
+      "handler": "EXPORT_svg",
+      "identifier": "EXPORT",
+      "name": "Export SVG",
+      "script": "script.js",
+      "shortcut": "control command e"
+    },
+    {
+      "handler": "OPEN_svg",
+      "identifier": "OPEN",
+      "name": "Open SVG",
+      "script": "script.js",
+      "shortcut": "control command o"
+    },
+    {
+      "handler": "SAVE_svg",
+      "identifier": "SAVE",
+      "name": "Save SVG",
+      "script": "script.js",
+      "shortcut": "control command s"
+    }
+  ],
+  "disableCocoaScriptPreprocessor": true
 }
