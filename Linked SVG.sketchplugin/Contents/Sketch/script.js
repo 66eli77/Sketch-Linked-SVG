@@ -29377,6 +29377,7 @@ __globals.EXPORT_svg = function (context) {
   var fromat = MSExportFormat.formatWithScale_name_fileFormat(1.000000, '', 'svg')
   var option = MSExportOptions.new();
   option.setExportFormats([fromat]);
+  var exportFormat = option.exportFormats();
   var colorSpace = NSColorSpace.sRGBColorSpace();
   var request;
   var exportedData;
@@ -29386,12 +29387,11 @@ __globals.EXPORT_svg = function (context) {
     var tempPage = page.duplicate();
     tempPage.removeAllLayers();
     tempPage.addLayers(selection);
-    tempPage.setPrimitiveExportOptions(option);
-    request = MSExportRequest.exportRequestsFromExportableLayer(tempPage).firstObject();
+    request = MSExportRequest.exportRequestsFromExportableLayer_exportFormats_useIDForName(tempPage, exportFormat, false).firstObject();
     tempPage = nil;
   } else {
     page.setPrimitiveExportOptions(option);
-    request = MSExportRequest.exportRequestsFromExportableLayer(page).firstObject();
+    request = MSExportRequest.exportRequestsFromExportableLayer_exportFormats_useIDForName(page, exportFormat, false).firstObject();
   }
   exporter = MSExportRendererWithSVGSupport.exporterForRequest_colorSpace(request, colorSpace);
   exportedData = exporter.data();
@@ -29443,9 +29443,9 @@ __globals.SAVE_svg = function (context) {
   var fromat = MSExportFormat.formatWithScale_name_fileFormat(1.000000, '', 'svg')
   var option = MSExportOptions.new();
   option.setExportFormats([fromat]);
-  page.setPrimitiveExportOptions(option);
+  var exportFormat = option.exportFormats();
+  var request = MSExportRequest.exportRequestsFromExportableLayer_exportFormats_useIDForName(page, exportFormat, false).firstObject();
   var colorSpace = NSColorSpace.sRGBColorSpace();
-  var request = MSExportRequest.exportRequestsFromExportableLayer(page).firstObject();
   var exporter = MSExportRendererWithSVGSupport.exporterForRequest_colorSpace(request, colorSpace);
   var exportedData = exporter.data();
   var svgJavascrioptString = "" + NSString.alloc().initWithData_encoding(exportedData, NSUTF8StringEncoding);
