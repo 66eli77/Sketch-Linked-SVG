@@ -20,7 +20,7 @@ Double click `Linked SVG.sketchplugin` to install the Plugin.
 
 - `Save SVG` -- save all layers in the current `page` into a SVG file.
 
-This plugin eventually enables you to use SVG as the target file format for Sketch, and output consistent and concise SVG code. If you plan to manage a SVG based project on Github, this plugin will help you reduce merge conflict greatly.
+This plugin eventually enables you to use SVG as the target file format for Sketch, and output consistent and concise SVG code. If you plan to manage a SVG based project on Github, this plugin will help you reduce merge conflict greatly or make it easy to resolve.
 
 
 # References
