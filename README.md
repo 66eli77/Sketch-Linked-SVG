@@ -1,7 +1,6 @@
 # Sketch-Linked-SVG
 Sketch already supports drag and drop SVG files. However by importing SVG files via this plugin, you can update the imported SVG layer if the external source file changed.
 
-<img src="wow.png" style="width: 160px;" />
 
 # Installation
 
@@ -21,9 +20,9 @@ Double click `Linked SVG.sketchplugin` to install the Plugin.
 
 - `Save SVG` -- save all layers in the current `page` into a SVG file.
 
+This plugin eventually enables you to use SVG as the target file format for Sketch, and output consistent and concise SVG code. If you plan to manage a SVG based project on Github, this plugin will help you reduce merge conflict greatly.
 
-# Info & Feedback
 
-If you have any questions or ideas, send me an email at 66eli77@gmail.com
+# References
 
 Big thanks to <a href="https://github.com/frankko/Place-Linked-Bitmap" target="_blank">Place-Linked-Bitmap</a> for inspirations and <a href="https://github.com/BohemianCoding/svgo-compressor" target="_blank">SVGO Compressor</a> for providing the compression methods and <a href="https://github.com/abynim/Sketch-Headers" target="_blank">Sketch-Headers</a> for how to use undocumented Sketch functionality.
