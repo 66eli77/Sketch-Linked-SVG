@@ -29339,7 +29339,7 @@ __globals.IMPORT_linked_svg = function (context) {
     var docDir = getDirectory(doc.fileURL());
     var group;
 
-    if (selection.count() > 0) {
+    if (selection.count() > 0 && selection.objectAtIndex(0).className() == 'MSLayerGroup') {
       group = selection.objectAtIndex(0);
     } else {
       group = page;
