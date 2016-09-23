@@ -29427,6 +29427,20 @@ __globals.OPEN_svg = function (context) {
   var svgImporter = MSSVGImporter.svgImporter();
   svgImporter.prepareToImportFromURL(url);
   var layer = svgImporter.importAsLayer();
+
+  //because when sketch load svg, it will wrap all svg text tag with a MSLayerGroup, we need to revert this in order to keep code consistency.
+  var children = layer.children();
+  for (var i = 0; i < children.length; i++) {
+    if (children[i].className() == 'MSTextLayer') {
+      var textParentGroupName = children[i].name().split(' ').join('-');
+      var textParentGroup = children[i].parentGroup();
+      if (textParentGroup.name() == textParentGroupName) {
+        textParentGroup.ungroup();
+      }
+    }
+  }
+
+  page.removeAllLayers();
   page.name = fileNameParts.shift();
   if (layer.firstLayer()) {
     layer.firstLayer().ungroup();
@@ -29439,7 +29453,6 @@ __globals.OPEN_svg = function (context) {
 __globals.SAVE_svg = function (context) {
   var doc = context.document;
   var page = doc.currentPage();
-  var selection = context.selection;
   var fromat = MSExportFormat.formatWithScale_name_fileFormat(1.000000, '', 'svg')
   var option = MSExportOptions.new();
   option.setExportFormats([fromat]);
